@@ -7,8 +7,9 @@ const app = express();
 app.use(cors({ origin: true }));
 app.use(express.json());
 
+// Initialize OpenAI client using the Firebase environment variable
 const openai = new OpenAI({
-  apiKey: functions.config().openai.key,
+  apiKey: functions.config().openai.key, // Securely fetch the key
 });
 
 app.post("/chat", async (req, res) => {
@@ -22,15 +23,9 @@ app.post("/chat", async (req, res) => {
     });
     res.json({ text: response.choices[0].message.content });
   } catch (error) {
-    console.error(error);
+    console.error("Error communicating with OpenAI:", error);
     res.status(500).send("Something went wrong");
   }
-});
-
-// Ensure the app listens on the correct port
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
 });
 
 // Export the function for Firebase
