@@ -8,7 +8,7 @@ app.use(cors({ origin: true }));
 app.use(express.json());
 
 const openai = new OpenAI({
-  apiKey: functions.config().openai.key, // Use Firebase config
+  apiKey: functions.config().openai.key,
 });
 
 app.post("/chat", async (req, res) => {
@@ -27,5 +27,11 @@ app.post("/chat", async (req, res) => {
   }
 });
 
-// Export the app as a Firebase Function
+// Ensure the app listens on the correct port
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
+});
+
+// Export the function for Firebase
 exports.chat = functions.https.onRequest(app);

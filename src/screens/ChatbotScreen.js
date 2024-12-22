@@ -17,9 +17,11 @@ const ChatbotScreen = () => {
 
     try {
       // Send the user's message to the backend
-      const response = await axios.post("http://localhost:5001/chat", {
-        prompt: input, // User's message
-      });
+      const response = await axios.post(
+        "https://<your-firebase-project>.cloudfunctions.net/chat",
+        { prompt: input }
+      );
+      
 
       // Extract AI response and add to chat history
       const aiResponse = response.data.text.trim();
